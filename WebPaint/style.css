@@ -1,0 +1,16 @@
+::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#myCanvas {
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  image-rendering: pixelated;
+}
