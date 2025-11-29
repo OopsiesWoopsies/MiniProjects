@@ -4,37 +4,59 @@ const ctx = myCanvas.getContext("2d");
 myCanvas.width = window.innerWidth;
 myCanvas.height = window.innerHeight;
 
-const trailOfFilledRects = [];
+const trailOfShapes = [];
 
-class FilledRectInfo {
-  constructor(x, y, lifetime, colour, size) {
+const colours = [
+  "pink",
+  "tomato",
+  "red",
+  "orange",
+  "gold",
+  "green",
+  "lime",
+  "blue",
+  "cyan",
+  "blueviolet",
+];
+let colourIndex = 9;
+
+class CircleInfo {
+  constructor(x, y, lifetime, colour, radius) {
     this.x = x;
     this.y = y;
+    this.originalLifetime = lifetime;
     this.lifetime = lifetime;
     this.colour = colour;
-    this.size = size;
+    this.radius = radius;
+    this.transparency = 1.0;
   }
   decreaseLifetime() {
-    if (lifetime > 0) lifetime--;
+    if (this.lifetime >= 0) this.lifetime--;
+    this.transparency = this.lifetime / this.originalLifetime;
   }
 }
 
 function drawTrail() {
-  let len = trailOfFilledRects.length;
+  ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+  let len = trailOfShapes.length;
   for (let i = 0; i < len; i++) {
-    ctx.fillStyle = trailOfFilledRects[i].colour;
-    const x = trailOfFilledRects[i].x;
-    const y = trailOfFilledRects[i].y;
-    const size = trailOfFilledRects[i].size;
-    ctx.fillRect(x, y, size, size);
-    trailOfFilledRects[i].lifetime--;
-    if (trailOfFilledRects[i].lifetime > 0) continue;
-    ctx.clearRect(x, y, size, size);
-    [trailOfFilledRects[i], trailOfFilledRects[len - 1]] = [
-      trailOfFilledRects[len - 1],
-      trailOfFilledRects[i],
+    console.log(`lifetime at index ${i} is ${trailOfShapes[i].lifetime}`);
+    ctx.globalAlpha = trailOfShapes[i].transparency;
+    ctx.fillStyle = trailOfShapes[i].colour;
+    const x = trailOfShapes[i].x;
+    const y = trailOfShapes[i].y;
+    const radius = trailOfShapes[i].radius;
+
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, 2 * Math.PI);
+    ctx.fill();
+    trailOfShapes[i].decreaseLifetime();
+    if (trailOfShapes[i].lifetime >= 0) continue;
+    [trailOfShapes[i], trailOfShapes[len - 1]] = [
+      trailOfShapes[len - 1],
+      trailOfShapes[i],
     ];
-    trailOfFilledRects.pop();
+    trailOfShapes.pop();
     len--;
   }
 
@@ -49,7 +71,8 @@ requestAnimationFrame(drawTrail);
 myCanvas.addEventListener("mousemove", (event) => {
   x = event.offsetX;
   y = event.offsetY;
-  trailOfFilledRects.push(new FilledRectInfo(x, y, 20, "white", 10));
+  trailOfShapes.push(new CircleInfo(x, y, 20, colours[colourIndex], 10));
+
   [lastX, lastY] = [event.offsetX, event.offsetY];
 });
 
