@@ -1,0 +1,13 @@
+::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#myCanvas {
+    background-color: black;
+}
