@@ -40,7 +40,6 @@ function drawTrail() {
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
   let len = trailOfShapes.length;
   for (let i = 0; i < len; i++) {
-    console.log(`lifetime at index ${i} is ${trailOfShapes[i].lifetime}`);
     ctx.globalAlpha = trailOfShapes[i].transparency;
     ctx.fillStyle = trailOfShapes[i].colour;
     const x = trailOfShapes[i].x;
