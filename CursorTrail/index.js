@@ -56,6 +56,7 @@ function drawTrail() {
       trailOfShapes[i],
     ];
     trailOfShapes.pop();
+    i--;
     len--;
   }
 
@@ -70,7 +71,7 @@ requestAnimationFrame(drawTrail);
 myCanvas.addEventListener("mousemove", (event) => {
   x = event.offsetX;
   y = event.offsetY;
-  trailOfShapes.push(new CircleInfo(x, y, 20, colours[colourIndex], 10));
+  trailOfShapes.push(new CircleInfo(x, y, 200, colours[colourIndex], 10));
 
   [lastX, lastY] = [event.offsetX, event.offsetY];
 });
